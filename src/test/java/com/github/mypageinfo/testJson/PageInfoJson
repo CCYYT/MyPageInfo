@@ -1,0 +1,49 @@
+{
+  "page": 0,
+  "pageSize": 10,
+  "totalElementNum": 100,
+  "content": ["data1","data2"],
+  "fieldRule": {
+    "uuid": {
+      "condition": {
+        "value": [
+          "qaz",
+          "asd",
+          "qwe"
+        ],
+        "mode": "in"
+      },
+      "sort": "desc"
+    },
+    "groupName": {
+      "condition": {
+        "value": [
+          "asd"
+        ],
+        "mode": "equal"
+      },
+      "sort": "asc"
+    },
+    "info": {
+      "condition": {
+        "value": [
+          "qwe",
+          "asd"
+        ],
+        "mode": "like"
+      }
+    },
+    "createTime": {
+      "condition": {
+        "value": [
+          "2002",
+          "2020"
+        ],
+        "mode": "range"
+      }
+    },
+    "age": {
+      "sort": "asc"
+    }
+  }
+}

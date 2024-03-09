@@ -1,0 +1,75 @@
+{
+  "page": 0,
+  "pageSize": 10,
+  "totalElementNum": 100,
+  "content": ["data1","data2"],
+  "fieldRule": {
+    "ruleItem": {
+      "mode": "equal",
+      "condition":{
+        "uuid": "asd",
+        "name": "qwe"
+      },
+      "logic": "and"
+    },
+
+
+
+    "ruleItems": [
+      {
+        "mode": "equal",
+        "condition":{
+          "uuid": "asd",
+          "name": "qwe"
+        },
+        "logic": "and"
+      },
+      {
+        "mode": "range",
+        "condition":{
+          "age": {
+            "lte": 10,
+            "gte": 20
+          }
+        },
+        "logic": "and"
+      }
+    ],
+
+    "bool": [
+      {
+        "condition": {
+          "equal": {
+            "uuid": "asd",
+            "name": "qwe"
+          },
+          "range": {
+            "age": {
+              "lte": 10,
+              "gte": 20
+            }
+          }
+        },
+        "mode": "and",
+        "bool": {
+            "condition": {}
+        }
+      },
+      {
+        "condition": {
+          "in": {
+            "groupName": ["asd","zxc"],
+            "group": ["zxc"]
+          },
+          "like": {
+            "info": "qweasdzxc"
+          }
+        }
+      }
+    ],
+    "sort": {
+      "uuid": "desc",
+      "age": "asc"
+    }
+  }
+}
