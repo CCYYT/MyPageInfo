@@ -1,4 +1,4 @@
-package com.github.mypageinfo.equalContionInfo;
+package com.github.mypageinfo.equalConditionInfo;
 
 
 import com.github.mypageinfo.Condition;
@@ -20,7 +20,9 @@ public class EqualCondition
     @Override
     public PrecompiledSql toSql(FieldNameConventionConverter converter) {
         LinkedHashMap<String,Class<?>> parameter = new LinkedHashMap<>();
-        StringJoiner joiner = new StringJoiner(" and "," ( "," ) ");
+        StringJoiner joiner =
+                this.size() == 1 ?
+                        new StringJoiner(" and "): new StringJoiner(" and "," ( "," ) ");
         for (Map.Entry<String, String> entry : this.entrySet()) {
             //改变字段命名规则
             String s = converter.convertToNewFieldNameFormat(entry.getKey());

@@ -5,6 +5,7 @@
 <configuration>
     <settings>
         <setting name="mapUnderscoreToCamelCase" value="true"/><!--支持驼峰式命名-->
+        <setting name="logImpl" value="STDOUT_LOGGING" /><!-- 打印sql -->
     </settings>
 
     <plugins>

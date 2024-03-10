@@ -1,0 +1,49 @@
+{
+    "page": 0,
+    "pageSize": 10,
+    "totalElementNum": 100,
+    "content": [],
+    "fieldRule": {
+        "ruleItem": {
+            "range": {
+                "id": { "lte": 20, "gte":1}
+            },
+            "equal":{
+                "data": "test4"
+            },
+            "like":{
+                "data":"test%"
+            },
+            "in":{
+                "id":[1,2,3,4,5,6,7]
+            }
+        }
+    }
+}
+
+{
+    "page": 0,
+    "pageSize": 10,
+    "totalElementNum": 100,
+    "content": [],
+    "fieldRule": {
+        "ruleItems": [
+            {
+                "range": {
+                    "id": { "lte": 4, "gte":1}
+                },
+                "equal":{
+                    "data": "test4"
+                }
+            },
+            {
+                "like":{
+                    "data":"1%"
+                },
+                "in":{
+                    "id":[1,2,3,4,5,6,7,8]
+                }
+            }
+        ]
+    }
+}

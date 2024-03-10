@@ -1,7 +1,9 @@
 package com.github.mypageinfo.deserializer;
 
 import com.github.mypageinfo.Condition;
-import com.github.mypageinfo.equalContionInfo.EqualCondition;
+import com.github.mypageinfo.equalConditionInfo.EqualCondition;
+import com.github.mypageinfo.inConditionInfo.InCondition;
+import com.github.mypageinfo.likeConditionInfo.LikeCondition;
 import com.github.mypageinfo.rangeConditionInfo.RangeCondition;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -40,6 +42,8 @@ public class RuleItemDeserializer extends StdDeserializer<RuleItem> {
         // 注册对应的 condition映射类型
         conditionMap.put("equal", EqualCondition.class);
         conditionMap.put("range", RangeCondition.class);
+        conditionMap.put("in", InCondition.class);
+        conditionMap.put("like", LikeCondition.class);
     }
 
     @Override

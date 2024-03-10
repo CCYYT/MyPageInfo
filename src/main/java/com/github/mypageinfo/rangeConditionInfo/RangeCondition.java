@@ -19,7 +19,9 @@ public class RangeCondition
     @Override
     public PrecompiledSql toSql(FieldNameConventionConverter converter) {
         LinkedHashMap<String,Class<?>> parameter = new LinkedHashMap<>();
-        StringJoiner joiner = new StringJoiner(" and "," ( "," ) ");
+        StringJoiner joiner =
+                this.size() == 1 ?
+                        new StringJoiner(" and "): new StringJoiner(" and "," ( "," ) ");
         for (Map.Entry<String, RangeValue> entry : this.entrySet()) {
             RangeValue rangeValue = entry.getValue();
             //改变字段命名规则
@@ -27,12 +29,12 @@ public class RangeCondition
             rangeValue.forEach(
                     (rangeMode, v) -> {
                         switch (rangeMode) {
-                            case lte:
-                                joiner.add(k + " <= ?");
-                                break;
-                            case gte:
-                                joiner.add(k + " >= ?");
-                                break;
+                            case eq: joiner.add(k + " = ?");break;
+                            case ne:case neq: joiner.add(k + " != ?");break;
+                            case lt: joiner.add(k + " < ?");break;
+                            case lte: joiner.add(k + " <= ?");break;
+                            case gt: joiner.add(k + " > ?");break;
+                            case gte: joiner.add(k + " >= ?");break;
                         }
                         try {
                             parameter.put(v, PoJoUtil.getFieldType(entry.getKey()));

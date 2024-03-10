@@ -16,24 +16,51 @@ import java.io.Reader;
 import java.util.List;
 
 public class MybatisTest {
-//    String json = "{\n" +
-//            "  \"page\": 0,\n" +
-//            "  \"pageSize\": 10,\n" +
-//            "  \"totalElementNum\": 100,\n" +
-//            "  \"content\": [],\n" +
-//            "  \"fieldRule\": {\n" +
-//            "    \"ruleItem\": {\n" +
-//            "       \"range\": {\n" +
-//            "          \"id\": { \"lte\": 20, \"gte\": 3}" +
-//            "        }," +
-//            "       \"equal\": {\n"+
-//            "            \"data\": \"test9\""+
-//            "        }"+
-//            "     }" +
-//            "   }" +
-//            "  }";
-
     String json = "{\n" +
+            "    \"page\": 1,\n" +
+            "    \"pageSize\": 2,\n" +
+            "    \"totalElementNum\": 100,\n" +
+            "    \"content\": [],\n" +
+            "    \"fieldRule\": {\n" +
+            "        \"ruleItems\": [\n" +
+            "            {\n" +
+            "                \"range\": {\n" +
+            "                    \"id\": { \"lte\": 4, \"gte\":1}\n" +
+            "                },\n" +
+            "                \"equal\":{\n" +
+            "                    \"data\": \"test4\"\n" +
+            "                }\n" +
+            "            },\n" +
+            "            {\n" +
+            "                \"like\":{\n" +
+            "                    \"data\":\"1%\"\n" +
+            "                },\n" +
+            "                \"in\":{\n" +
+            "                    \"id\":[1,2,3,4,5,6,7,8]\n" +
+            "                }\n" +
+            "            }\n" +
+            "        ]\n" +
+            "    }\n" +
+            "}";
+
+    String json2 = "{\n" +
+            "  \"page\": 0,\n" +
+            "  \"pageSize\": 10,\n" +
+            "  \"totalElementNum\": 100,\n" +
+            "  \"content\": [],\n" +
+            "  \"fieldRule\": {\n" +
+            "    \"ruleItem\": {\n" +
+            "       \"range\": {\n" +
+            "          \"id\": { \"lte\": 20, \"gte\": 3}" +
+            "        }," +
+            "       \"equal\": {\n"+
+            "            \"data\": \"test9\""+
+            "        }," +
+            "     }" +
+            "   }" +
+            "  }";
+
+    String json1 = "{\n" +
             "  \"page\": 0,\n" +
             "  \"pageSize\": 10,\n" +
             "  \"totalElementNum\": 100,\n" +
@@ -42,12 +69,15 @@ public class MybatisTest {
             "    \"ruleItems\": [" +
             "       {\n" +
             "         \"range\": {\n" +
-            "            \"id\": { \"lte\": 20, \"gte\": 1}" +
+            "            \"id\": { \"lte\": 24, \"gte\": 1}" +
             "          }" +
             "        }," +
             "        {" +
             "            \"equal\": {\n"+
             "              \"data\": \"test4\""+
+            "              }," +
+            "            \"range\": {\n"+
+            "               \"id\": {\"eq\": 4}" +
             "              }" +
             "         }"+
             "       ]" +

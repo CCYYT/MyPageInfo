@@ -98,26 +98,35 @@ public class MyPageInfoInterceptor implements Interceptor {
     * */
     public String analysisSql(PageInfo pageInfo, List<ParameterMapping> parameterMappings, Map<String,Object> additionalParameters, Configuration configuration){
 
-        StringJoiner joiner = new StringJoiner(" and "," where "," ");
+//        StringJoiner joiner = new StringJoiner(" and "," where "," ");
+        StringJoiner joiner = new StringJoiner(" or "," where "," ");
 
         if (!pageInfo.getIsCheckField()) throw new RuntimeException("pageInfo 中未进行过字段检测 ，请运行PageInfo.checkFieldRule(); \n在执行sql前 你应该先执行一次PageInfo.checkFieldRule()");
 
         FieldRule fieldRule = pageInfo.getFieldRule();
         if (fieldRule instanceof SimpleFieldRule){
             SimpleFieldRule fieldRule1 = (SimpleFieldRule) fieldRule;
-            toSql(joiner,fieldRule1.getRuleItem(),parameterMappings,additionalParameters,configuration);
-
+            String s = toSql(fieldRule1.getRuleItem(), parameterMappings, additionalParameters, configuration);
+            joiner.add(s);
+            //            return s==""?"":" where "+s;
         } else if (fieldRule instanceof MoreFieldRule) {
             MoreFieldRule fieldRule1 = (MoreFieldRule) fieldRule;
+//            StringJoiner joiner = new StringJoiner(" or "," where "," ");
             for (RuleItem ruleItem : fieldRule1.getRuleItems()) {
-                toSql(joiner,ruleItem,parameterMappings,additionalParameters,configuration);
+                joiner.add(
+                        toSql(ruleItem,parameterMappings,additionalParameters,configuration)
+                );
             }
+//            return joiner.toString();
         }
-        return joiner.toString();
+        return joiner.toString()+" limit "+pageInfo.getPage()*pageInfo.getPageSize()+","+pageInfo.getPageSize();
+
+//        return null;
     }
 
-    //解析ruleItem中的Condition,生成sql、参数映射表，并添加到joiner中
-    private void toSql(StringJoiner joiner, RuleItem ruleItem, List<ParameterMapping> parameterMappings, Map<String,Object> additionalParameters, Configuration configuration){
+    //解析ruleItem中的Condition,生成sql、参数映射表
+    private String toSql(RuleItem ruleItem, List<ParameterMapping> parameterMappings, Map<String,Object> additionalParameters, Configuration configuration){
+        StringJoiner joiner = new StringJoiner(" and ","(",")");
         for (Condition<?> condition : ruleItem) {
             PrecompiledSql precompiledSql = condition.toSql(Config.getConverter());
 
@@ -130,5 +139,6 @@ public class MyPageInfoInterceptor implements Interceptor {
             });
             joiner.add(precompiledSql.getSql());
         }
+        return joiner.toString();
     }
 }
