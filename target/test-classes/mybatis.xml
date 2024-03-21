@@ -9,7 +9,7 @@
     </settings>
 
     <plugins>
-        <plugin interceptor="com.github.mypageinfo.MyPageInfoInterceptor"></plugin>
+        <plugin interceptor="com.github.mypageinfo.MyPageInfoInterceptor"/>
     </plugins>
 
     <environments default="development">
@@ -27,7 +27,7 @@
 
 
     <mappers>
-        <mapper class="com.github.mypageinfo.mapper.DeviceMapper"></mapper>
+        <mapper class="com.github.mypageinfo.mapper.DeviceMapper"/>
     </mappers>
 
 

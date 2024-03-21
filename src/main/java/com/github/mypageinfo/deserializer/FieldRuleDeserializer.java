@@ -1,9 +1,6 @@
 package com.github.mypageinfo.deserializer;
 
-import com.github.mypageinfo.FieldRule;
-import com.github.mypageinfo.MoreFieldRule;
-import com.github.mypageinfo.RuleItem;
-import com.github.mypageinfo.SimpleFieldRule;
+import com.github.mypageinfo.*;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.ObjectCodec;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -20,7 +17,7 @@ import java.util.ArrayList;
  * @author: CCYT
  * @create: 2024-02-19 16:01
  **/
-public class FieldRuleDeserializer extends StdDeserializer<FieldRule> {
+public class FieldRuleDeserializer extends StdDeserializer<AbstractFieldRule> {
     ObjectCodec codec;
 
     public FieldRuleDeserializer() {
@@ -40,16 +37,18 @@ public class FieldRuleDeserializer extends StdDeserializer<FieldRule> {
     }
 
     @Override
-    public FieldRule deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+    public AbstractFieldRule deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
         JsonNode node = p.getCodec().readTree(p);
         codec = p.getCodec();
-
 
         if (node.has("ruleItem")) {
             // 处理 "ruleItem" 的情况
             SimpleFieldRule simpleFieldRule = new SimpleFieldRule();
             simpleFieldRule.setRuleItem(
                     readValueAsRuleItem(node.get("ruleItem"))
+            );
+            simpleFieldRule.setSort(
+                    readValueAsSort(node.get("sort"))
             );
             return simpleFieldRule;
 
@@ -63,13 +62,20 @@ public class FieldRuleDeserializer extends StdDeserializer<FieldRule> {
                             jsonNode -> ruleItems.add(readValueAsRuleItem(jsonNode))
                     );
             moreFieldRule.setRuleItems(ruleItems);
-
+            moreFieldRule.setSort(
+                    readValueAsSort(node.get("sort"))
+            );
             return moreFieldRule;
+        }else if(node.has("sort")){
+            SimpleFieldRule simpleFieldRule = new SimpleFieldRule();
+            simpleFieldRule.setSort(readValueAsSort(node.get("sort")));
+            return simpleFieldRule;
         }
         return null;
     }
 
     private RuleItem readValueAsRuleItem(JsonNode jsonNode){
+        if(jsonNode == null) return null;
         try {
             return jsonNode.traverse(codec)
                     .readValueAs(RuleItem.class);
@@ -77,4 +83,15 @@ public class FieldRuleDeserializer extends StdDeserializer<FieldRule> {
             throw new RuntimeException(e);
         }
     }
+    private Sort readValueAsSort(JsonNode jsonNode){
+        if(jsonNode == null) return null;
+        try {
+            return jsonNode.traverse(codec)
+                    .readValueAs(Sort.class);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
 }

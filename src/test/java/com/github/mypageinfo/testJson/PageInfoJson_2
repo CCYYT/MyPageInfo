@@ -1,75 +1,24 @@
 {
   "page": 0,
   "pageSize": 10,
-  "totalElementNum": 100,
-  "content": ["data1","data2"],
   "fieldRule": {
-    "ruleItem": {
-      "mode": "equal",
-      "condition":{
-        "uuid": "asd",
-        "name": "qwe"
-      },
-      "logic": "and"
-    },
-
-
-
     "ruleItems": [
       {
-        "mode": "equal",
-        "condition":{
-          "uuid": "asd",
-          "name": "qwe"
+        "range": {
+          "id": { "lte": 4, "gte":1}
         },
-        "logic": "and"
-      },
-      {
-        "mode": "range",
-        "condition":{
-          "age": {
-            "lte": 10,
-            "gte": 20
-          }
-        },
-        "logic": "and"
-      }
-    ],
-
-    "bool": [
-      {
-        "condition": {
-          "equal": {
-            "uuid": "asd",
-            "name": "qwe"
-          },
-          "range": {
-            "age": {
-              "lte": 10,
-              "gte": 20
-            }
-          }
-        },
-        "mode": "and",
-        "bool": {
-            "condition": {}
+        "equal":{
+          "data": "test4"
         }
       },
       {
-        "condition": {
-          "in": {
-            "groupName": ["asd","zxc"],
-            "group": ["zxc"]
-          },
-          "like": {
-            "info": "qweasdzxc"
-          }
+        "like":{
+          "data":"1%"
+        },
+        "in":{
+          "id":[1,2,3,4,5,6,7,8]
         }
       }
-    ],
-    "sort": {
-      "uuid": "desc",
-      "age": "asc"
-    }
+    ]
   }
 }

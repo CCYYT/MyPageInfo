@@ -1,16 +1,13 @@
 package com.github.mypageinfo;
 
 
-public class SimpleFieldRule extends FieldRule {
+public class SimpleFieldRule extends AbstractFieldRule {
 
     private RuleItem ruleItem;
 
-    private Sort sort;
-
     @Override
-    public void checkField() {
-        ruleItem.forEach(Condition::check);
-        if(sort != null) sort.check();
+    public void checkRuleItem() {
+        if(ruleItem != null)ruleItem.forEach(Condition::check);
     }
 
     public RuleItem getRuleItem() {
@@ -21,11 +18,4 @@ public class SimpleFieldRule extends FieldRule {
         this.ruleItem = ruleItem;
     }
 
-    public Sort getSort() {
-        return sort;
-    }
-
-    public void setSort(Sort sort) {
-        this.sort = sort;
-    }
 }

@@ -1,45 +1,16 @@
 {
   "page": 0,
-  "pageSize": 10,
-  "totalElementNum": 100,
-  "content": ["data1","data2"],
+  "pageSize": 20,
   "fieldRule": {
     "ruleItem": {
       "equal": {
-        "uuid": "asd",
-        "name": "qwe"
-    },
-      "range": {
-        "age": { "lte": 10, "gte": 20}
+        "data": "test4",
+        "id": "4"
       }
     },
-
-
-    "ruleItems": [
-      {
-        "equal": {
-          "uuid": "asd",
-          "name": "qwe"
-        },
-        "range": {
-          "age": { "lte": 10, "gte": 20}
-        }
-      },
-      {
-        "in": {
-          "groupName": ["asd","zxc"],
-          "group": ["zxc"]
-        },
-        "like": {
-          "info": "qweasdzxc"
-        }
-      }
-    ],
     "sort": {
-      "uuid": "desc",
-      "age": "asc"
+      "id": "desc",
+      "data": "asc"
     }
   }
 }
-
-

@@ -98,30 +98,62 @@ public class MyPageInfoInterceptor implements Interceptor {
     * */
     public String analysisSql(PageInfo pageInfo, List<ParameterMapping> parameterMappings, Map<String,Object> additionalParameters, Configuration configuration){
 
-//        StringJoiner joiner = new StringJoiner(" and "," where "," ");
-        StringJoiner joiner = new StringJoiner(" or "," where "," ");
-
         if (!pageInfo.getIsCheckField()) throw new RuntimeException("pageInfo 中未进行过字段检测 ，请运行PageInfo.checkFieldRule(); \n在执行sql前 你应该先执行一次PageInfo.checkFieldRule()");
 
-        FieldRule fieldRule = pageInfo.getFieldRule();
+        //所有条件的sql
+        StringBuilder sqlStringBuilder = new StringBuilder();
+
+        AbstractFieldRule fieldRule = pageInfo.getFieldRule();
+        if(fieldRule != null){
+            //1.解析fieldRule.RuleItem/RuleItems
+            String ruleItemSql = analysisRuleItem(fieldRule, parameterMappings, additionalParameters, configuration);
+            if(ruleItemSql != null)sqlStringBuilder.append(ruleItemSql); //拼接条件规则
+
+            //2.解析sort
+            Sort sort = fieldRule.getSort();
+            if (sort != null) {
+                StringJoiner sortJoiner = new StringJoiner(","," ORDER BY "," ");
+                StringBuilder sortStringBuilder = new StringBuilder();
+                sort.forEach(new BiConsumer<String, SortMode>() {
+                    @Override
+                    public void accept(String s, SortMode sortMode) {
+                        sortStringBuilder.setLength(0); // 清空StringBuilder，准备下一次拼接
+                        sortStringBuilder.append(s).append(" ").append(sortMode);
+                        sortJoiner.add(sortStringBuilder);
+                    }
+                });
+                //拼接排序规则
+                sqlStringBuilder.append(sortJoiner);
+            }
+        }
+
+        //拼接分页规则
+        sqlStringBuilder.append(" LIMIT ").append(pageInfo.getPage()*pageInfo.getPageSize()).append(",").append(pageInfo.getPageSize());
+
+        return sqlStringBuilder.toString();
+    }
+
+    /*
+     * 解析fieldRule.RuleItem/RuleItems
+     * 后续如果要 添加/解析 新的FieldRule 该方法可以优化为责任链
+     * */
+    private String analysisRuleItem(AbstractFieldRule fieldRule, List<ParameterMapping> parameterMappings, Map<String,Object> additionalParameters, Configuration configuration) {
+        StringJoiner joiner = new StringJoiner(" OR "," WHERE "," ");
         if (fieldRule instanceof SimpleFieldRule){
             SimpleFieldRule fieldRule1 = (SimpleFieldRule) fieldRule;
+            if(fieldRule1.getRuleItem() == null) return null;
             String s = toSql(fieldRule1.getRuleItem(), parameterMappings, additionalParameters, configuration);
             joiner.add(s);
-            //            return s==""?"":" where "+s;
         } else if (fieldRule instanceof MoreFieldRule) {
             MoreFieldRule fieldRule1 = (MoreFieldRule) fieldRule;
-//            StringJoiner joiner = new StringJoiner(" or "," where "," ");
+            if(fieldRule1.getRuleItems() == null) return null;
             for (RuleItem ruleItem : fieldRule1.getRuleItems()) {
                 joiner.add(
                         toSql(ruleItem,parameterMappings,additionalParameters,configuration)
                 );
             }
-//            return joiner.toString();
         }
-        return joiner.toString()+" limit "+pageInfo.getPage()*pageInfo.getPageSize()+","+pageInfo.getPageSize();
-
-//        return null;
+        return joiner.toString();
     }
 
     //解析ruleItem中的Condition,生成sql、参数映射表

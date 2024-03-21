@@ -17,6 +17,20 @@ import java.util.List;
 
 public class MybatisTest {
     String json = "{\n" +
+            "    \"page\": 0,\n" +
+            "    \"fieldRule\": {\n" +
+            "        \"ruleItem\": {\n" +
+            "            \"equal\": {\n" +
+            "                \"data\": \"test4\",\n" +
+            "                \"id\": \"4\"\n" +
+            "            }\n" +
+            "        },\n" +
+            "        \"sort\": {\n" +
+            "            \"id\": \"desc\"\n" +
+            "        }\n" +
+            "    }\n" +
+            "}";
+    String json2 = "{\n" +
             "    \"page\": 1,\n" +
             "    \"pageSize\": 2,\n" +
             "    \"totalElementNum\": 100,\n" +
@@ -43,7 +57,7 @@ public class MybatisTest {
             "    }\n" +
             "}";
 
-    String json2 = "{\n" +
+    String json3 = "{\n" +
             "  \"page\": 0,\n" +
             "  \"pageSize\": 10,\n" +
             "  \"totalElementNum\": 100,\n" +
@@ -56,7 +70,9 @@ public class MybatisTest {
             "       \"equal\": {\n"+
             "            \"data\": \"test9\""+
             "        }," +
-            "     }" +
+            "     }," +
+            "     \"sort\":{" +
+            "        \"id\":\"desc\"" +
             "   }" +
             "  }";
 
@@ -96,7 +112,6 @@ public class MybatisTest {
         TypeReference<PageInfo<DeviceData>> typeRef = new TypeReference<PageInfo<DeviceData>>() {};
         PageInfo<DeviceData> pageInfo = o.readValue(json, typeRef);
         pageInfo.checkFieldRule(DeviceData.class);
-
         List<DeviceData> deviceData = mapper.queryAllByLimit(pageInfo);
         deviceData.forEach(System.out::println);
 //        Object o = session.selectOne("lrs.user.findById", 1);

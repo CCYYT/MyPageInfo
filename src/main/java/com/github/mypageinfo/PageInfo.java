@@ -10,10 +10,19 @@ public class PageInfo<T> {
     private long totalPagesNum; //一共有多少页
     private long totalElementNum; //一共多少行
     private List<T> content; //结果字段
-    private FieldRule fieldRule; //筛选条件
+    private AbstractFieldRule fieldRule; //筛选条件
 
     private boolean isCheckField = false;
 
+
+    public PageInfo(boolean skipFieldRule) {
+        if(skipFieldRule) System.err.println("警告：跳过FieldRule检测,PageInfo中的FieldRule不可靠！ 会一定的风险");
+        this.isCheckField = skipFieldRule;
+    }
+
+    public PageInfo(AbstractFieldRule fieldRule) {
+        this.fieldRule = fieldRule;
+    }
 
     //校验fieldRule中的字段 是否合法
     public void checkFieldRule(Class<?> ruleObject){
@@ -66,11 +75,11 @@ public class PageInfo<T> {
         this.content = content;
     }
 
-    public FieldRule getFieldRule() {
+    public AbstractFieldRule getFieldRule() {
         return fieldRule;
     }
 
-    public void setFieldRule(FieldRule fieldRule) {
+    public void setFieldRule(AbstractFieldRule fieldRule) {
         this.fieldRule = fieldRule;
     }
 }
